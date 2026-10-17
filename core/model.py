@@ -1,26 +1,27 @@
+# core/model.py
 from sklearn.linear_model import LogisticRegression
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
-from utils.preprocessing import FEATURES
+
+# La liste des features est maintenant directement ici
+FEATURES = [
+    'mean radius',
+    'mean texture',
+    'mean perimeter',
+    'mean area',
+    'mean smoothness',
+]
 
 class CancerModel:
     def __init__(self):
-        # Pipeline : Standardisation + Régression Logistique
-        # Très important en médical : normaliser les données !
-        self.pipeline = Pipeline([
-            ('scaler', StandardScaler()),
-            ('classifier', LogisticRegression(max_iter=1000))
-        ])
+        # Plus de Pipeline, plus de Scaler. Juste le modèle.
+        self.model = LogisticRegression(max_iter=1000)
         self.features = FEATURES
 
     def fit(self, X, y):
-        """Entraîne le modèle."""
-        self.pipeline.fit(X, y)
+        """Entraîne le modèle sur les données brutes."""
+        self.model.fit(X, y)
         print(f"✅ Modèle entraîné sur {len(X)} patients.")
-        acc = self.pipeline.score(X, y)
-        print(f"   Précision (training) : {acc:.2%}")
 
     def predict(self, features):
-        """Retourne la probabilité de malignité (0 à 1)."""
-        proba = self.pipeline.predict_proba([features])[0][1]
+        """Reçoit une liste de features brutes et retourne la probabilité."""
+        proba = self.model.predict_proba([features])[0][1]
         return proba

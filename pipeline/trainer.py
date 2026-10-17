@@ -1,7 +1,7 @@
+# pipeline/trainer.py
 import pandas as pd
-from core.model import CancerModel
+from core.model import CancerModel, FEATURES
 from core.dataset import generate_dataset
-from utils.preprocessing import FEATURES
 
 class Trainer:
     def __init__(self):
@@ -10,17 +10,13 @@ class Trainer:
     def train(self, data_path):
         print("--- 🏥 Début de l'entraînement (Cancer du Sein) ---")
         
-        
-        
-        # 2. Charger les données
+        generate_dataset(data_path)
         df = pd.read_csv(data_path)
         
-        # 3. Séparer X et y
+        # On passe les données brutes (pandas gère les colonnes)
         X = df[FEATURES]
         y = df['malignant']
         
-        # 4. Entraîner
         self.model.fit(X, y)
-        
         print("--- ✅ Fin de l'entraînement ---")
         return self.model
