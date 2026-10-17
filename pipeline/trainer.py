@@ -10,8 +10,7 @@ class Trainer:
     def train(self, data_path):
         print("--- 🏥 Début de l'entraînement (Cancer du Sein) ---")
         
-        # 1. Générer le dataset si absent
-        generate_dataset(data_path)
+        
         
         # 2. Charger les données
         df = pd.read_csv(data_path)
